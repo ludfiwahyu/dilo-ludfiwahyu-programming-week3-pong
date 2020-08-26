@@ -8,6 +8,15 @@ public class BallControl : MonoBehaviour
     public float xInitialForce;
     public float yInitialForce;
 
+    private Vector2 trajectoryOrigin;
+
+    void Start()
+    {
+        rigidBody2D = GetComponent<Rigidbody2D>();
+        RestartGame();
+        trajectoryOrigin = transform.position;
+    }
+
     void ResetBall()
     {
         rigidBody2D.position = Vector2.zero;
@@ -34,12 +43,17 @@ public class BallControl : MonoBehaviour
         ResetBall();
         Invoke("PushBall", 2);
     }
-    void Start()
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        rigidBody2D = GetComponent<Rigidbody2D>();
-        RestartGame();
+        trajectoryOrigin = transform.position;
     }
 
+    public Vector2 TrajectoryOrigin
+    {
+        get { return trajectoryOrigin; }
+    }
+    
     //void OnCollisionEnter2D(Collision2D coll)
     //{
     //    if (coll.collider.CompareTag("Player"))

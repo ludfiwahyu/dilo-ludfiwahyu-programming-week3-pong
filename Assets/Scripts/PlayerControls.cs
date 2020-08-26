@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class PlayerControls : MonoBehaviour
 {
@@ -8,8 +9,11 @@ public class PlayerControls : MonoBehaviour
 	public KeyCode moveUp = KeyCode.W;
 	public KeyCode moveDown = KeyCode.S;
 	public float speed = 10.0f;
-	public float yBoundary = 9f;
+	public float yBoundary = 9.0f;
 	private Rigidbody2D rigidBody2D;
+	private int score;
+
+	private ContactPoint2D lastContactPoint;
 
 	// Use this for initialization
 	void Start()
@@ -46,4 +50,33 @@ public class PlayerControls : MonoBehaviour
 		}
 		transform.position = pos;
 	}
+
+	public void IncrementScore()
+	{
+		score++;
+	}
+
+	public void ResetScore()
+	{
+		score = 0;
+	}
+
+	public int Score
+	{
+		get { return score; }
+	}
+
+	public ContactPoint2D LastContactPoint
+    {
+		get { return lastContactPoint; }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+         if (collision.gameObject.name == "Ball")
+        {
+			lastContactPoint = collision.GetContact(0);
+        }
+    }
+
 }
